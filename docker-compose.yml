@@ -1,0 +1,30 @@
+version: '3'
+services:
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - sonarqube_network
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=sonarqube
+      - POSTGRES_PASSWORD=sonarqube
+      - POSTGRES_DB=sonarqube
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - sonarqube_network
+networks:
+  sonarqube_network:
+volumes:
+  sonarqube_data:
+  postgres_data:
+
